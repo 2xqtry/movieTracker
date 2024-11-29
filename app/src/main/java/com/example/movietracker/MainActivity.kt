@@ -56,7 +56,8 @@ class MainActivity : AppCompatActivity() {
             if (title.isNotBlank() && genre.isNotBlank() && description.isNotBlank()) {
                 val newMovieBook = MovieBook(title, genre, description, rating, type)
                 movieBooksList.add(newMovieBook)
-                movieBookAdapter.notifyItemInserted(movieBooksList.size - 1)
+                movieBookAdapter.updateList(movieBooksList)
+                movieBookAdapter.notifyDataSetChanged()
                 saveMovieBooks(movieBooksList)
                 clearForm()
             } else {
@@ -119,8 +120,8 @@ class MovieBookAdapter(
 
     inner class MovieBookViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val title: TextView = itemView.findViewById(R.id.tvTitle)
-        val genre: TextView = itemView.findViewById(R.id.tvTitle)
-        val rating: TextView = itemView.findViewById(R.id.seekBarRating)
+        val genre: TextView = itemView.findViewById(R.id.tvGenre)
+        val rating: TextView = itemView.findViewById(R.id.tvRating)
 
         fun bind(movieBook: MovieBook) {
             title.text = movieBook.title
@@ -134,7 +135,7 @@ class MovieBookAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieBookViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.activity_main, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie_book, parent, false)
         return MovieBookViewHolder(view)
     }
 
@@ -148,7 +149,6 @@ class MovieBookAdapter(
     fun updateList(newList: List<MovieBook>) {
         movieBooksList.clear()
         movieBooksList.addAll(newList)
-        notifyDataSetChanged()
     }
 }
 
